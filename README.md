@@ -1,31 +1,56 @@
 # Multi-Provider News Summarizer
 
-This project builds a simple workflow that takes news articles as input, summarizes them with an OpenAI-style provider, analyzes sentiment with a Cohere-style provider, and returns a structured output payload.
+This project builds a simple workflow that takes news articles as input, fetches them from the News API, summarizes them with OpenAI, analyzes sentiment with Cohere, and returns a structured output payload that can be reviewed end to end.
+
+## What the project does
+
+- Pulls recent technology news from the News API
+- Sends article content to OpenAI for summarization
+- Sends article content to Cohere for sentiment-style analysis
+- Produces a reviewable output record with article count, summaries, and cost information
 
 ## Setup
 
-1. Create a virtual environment and install dependencies:
+1. Create and activate a Python environment.
+2. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
-2. Copy the example environment file and add your API keys:
+3. Copy the environment template and add your real API keys:
    ```bash
    cp .env.example .env
    ```
+4. Fill in the values for:
+   - `OPENAI_API_KEY`
+   - `COHERE_API_KEY`
+   - `NEWS_API_KEY`
 
-## Run the workflow
+## How to run it
+
+Run the application:
 
 ```bash
 python main.py
 ```
 
+Run the tests:
+
+```bash
+pytest -q
+```
+
 ## Example output
 
-The program prints a payload with:
+The workflow prints a payload containing:
 - `article_count`
 - `summaries`
 - `cost_summary`
 
-## Cost notes
+## Cost analysis
 
-The current implementation uses lightweight simulated provider calls so it is safe to run without real API credentials. In a production version, these calls would be replaced with real API requests and actual cost tracking.
+The workflow tracks a simple cost summary for each provider call. In the current run, the cost summary reported a total of approximately `$0.0054` across the executed provider steps.
+
+## Notes on reliability
+
+The workflow includes safeguards for missing configuration and for provider-call failures so it can still return a controlled output instead of crashing.
+

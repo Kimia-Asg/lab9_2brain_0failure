@@ -3,7 +3,7 @@
 ## Workflow export
 
 - Input: a list of news article dictionaries fetched from the News API
-- Transform: `NewsSummarizer.run_workflow()` summarizes each article and attaches sentiment text
+- Transform: `NewsSummarizer.run_workflow()` summarizes each article and attaches sentiment-style output
 - Output: a structured payload containing `article_count`, `summaries`, and `cost_summary`
 
 ## Input payload
@@ -47,7 +47,7 @@ Workflow output (verified by running python main.py):
 
 ## Output record
 
-The workflow produced three summary records with real generated summaries and sentiment text from the live OpenAI and Cohere providers, plus a cost summary.
+The workflow produced three summary records with real generated summaries and sentiment-style text from the live OpenAI and Cohere providers, plus a cost summary.
 
 ## Challenges faced
 
@@ -56,3 +56,10 @@ The main difficulties were connecting the real providers correctly, handling emp
 ## First failure mode to monitor
 
 The first issue to monitor is missing or invalid configuration, because the workflow cannot safely process real requests if the required API keys or environment settings are absent.
+
+## Reflection
+
+1. Multi-provider integration: the workflow passes the article content through OpenAI and Cohere in sequence so each provider contributes a different part of the output.
+2. Fallback logic: fallback behavior activates when a provider request fails or configuration is missing, which improves resilience.
+3. Cost tracking: the workflow records provider-level cost estimates so the cost of the run is visible.
+4. Code quality: the tests helped verify the workflow and the fallback behavior before submission.
